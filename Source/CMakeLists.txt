@@ -1,0 +1,6 @@
+﻿include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory (Engine)
+add_subdirectory (Game)
+if (BUILD_TESTS)
+    add_subdirectory (Tests)
+endif ()

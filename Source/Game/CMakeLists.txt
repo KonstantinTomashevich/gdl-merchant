@@ -1,0 +1,7 @@
+﻿include_directories (${STATES_ENGINE_SDK}/include)
+set (TARGET_NAME GDLMerchantXVICentury)
+define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp")
+setup_main_executable ()
+target_link_libraries (GDLMerchantXVICentury StatesEngine)
+target_link_libraries (GDLMerchantXVICentury Engine)
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.hpp)

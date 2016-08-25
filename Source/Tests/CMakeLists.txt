@@ -1,0 +1,8 @@
+﻿include_directories (${TESTING_ENGINE_SDK}/include)
+include_directories (${STATES_ENGINE_SDK}/include)
+set (TARGET_NAME Tests)
+define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp")
+setup_main_executable ()
+target_link_libraries (Tests TestingEngine)
+target_link_libraries (Tests StatesEngine)
+target_link_libraries (Tests Engine)

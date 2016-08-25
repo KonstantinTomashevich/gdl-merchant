@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<document_root>
+    <action name = "move_up"
+                keys = "W;Up"
+                onKeyReactionMode = "IfDown"
+                canBeManuallyEdited = "1" />
+
+    <action name = "move_down"
+                keys = "S;Down"
+                onKeyReactionMode = "IfDown"
+                canBeManuallyEdited = "1" />
+
+    <action name = "move_left"
+                keys = "A;Left"
+                onKeyReactionMode = "IfDown"
+                canBeManuallyEdited = "1" />
+
+    <action name = "move_right"
+                keys = "D;Right"
+                onKeyReactionMode = "IfDown"
+                canBeManuallyEdited = "1" />
+</document_root>

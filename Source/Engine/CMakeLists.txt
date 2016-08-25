@@ -1,0 +1,21 @@
+﻿include_directories (${STATES_ENGINE_SDK}/include)
+if (NOT ENGINE_LIB_TYPE)
+set (ENGINE_LIB_TYPE STATIC)
+endif ()
+
+set (TARGET_NAME Engine)
+define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp")
+define_dependency_libs (Urho3D)
+setup_library (${ENGINE_LIB_TYPE})
+target_link_libraries (Engine StatesEngine)
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Engine.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/Engine.hpp)
+
+if (INSTALL_ENGINE)
+	install (TARGETS RTSEngine EXPORT RTSEngineConfig ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/libs LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/libs)
+	install (EXPORT RTSEngineConfig DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
+
+	foreach (H_FILE ${H_FILES})
+		get_filename_component (DIR ${H_FILE} DIRECTORY)
+		install (FILES ${H_FILE} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/RTSEngine/${DIR} )
+	endforeach (H_FILE)
+endif ()
