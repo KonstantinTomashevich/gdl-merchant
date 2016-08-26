@@ -55,7 +55,7 @@ bool MapObjectsVisualizer::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool MapObjectsVisualizer::SaveToXML (Urho3D::XMLElement &parentElement)
+Urho3D::XMLElement MapObjectsVisualizer::SaveToXML(Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }

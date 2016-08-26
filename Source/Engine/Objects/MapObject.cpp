@@ -32,7 +32,7 @@ bool MapObject::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool MapObject::SaveToXML (Urho3D::XMLElement &parentElement)
+Urho3D::XMLElement MapObject::SaveToXML (Urho3D::XMLElement &parentElement)
 {
     Urho3D::XMLElement saveElement = parentElement.CreateChild ("object");
     saveElement.SetAttribute ("type", this->GetTypeName ());
@@ -42,7 +42,7 @@ bool MapObject::SaveToXML (Urho3D::XMLElement &parentElement)
     saveElement.SetFloat ("prefabRotation", prefabRotation_);
     saveElement.SetFloat ("prefabScale", prefabScale_);
     saveElement.SetFloat ("maxCollisionDistance", maxCollisionDistance_);
-    return true;
+    return saveElement;
 }
 
 Urho3D::Vector2 MapObject::GetPosition ()

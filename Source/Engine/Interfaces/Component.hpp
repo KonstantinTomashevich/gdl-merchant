@@ -14,7 +14,7 @@ class XMLSerializable
 {
 public:
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement) = 0;
-    virtual bool SaveToXML (Urho3D::XMLElement &parentElement) = 0;
+    virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement) = 0;
 };
 
 class EventListener

@@ -145,7 +145,7 @@ bool Caravan::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool Caravan::SaveToXML (Urho3D::XMLElement &parentElement)
+Urho3D::XMLElement Caravan::SaveToXML (Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }

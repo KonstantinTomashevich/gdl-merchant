@@ -27,7 +27,7 @@ public:
     virtual bool Update (float timeStep) ;
     virtual bool Dispose ();
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
-    virtual bool SaveToXML (Urho3D::XMLElement &parentElement);
+    virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement);
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     Urho3D::String GetId ();

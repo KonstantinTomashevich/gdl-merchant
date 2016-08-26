@@ -125,7 +125,7 @@ bool Village::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool Village::SaveToXML(Urho3D::XMLElement &parentElement)
+Urho3D::XMLElement Village::SaveToXML(Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }
