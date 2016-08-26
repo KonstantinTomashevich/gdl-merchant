@@ -80,7 +80,7 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool TradeGoodsTypesContainer::SaveToXML(Urho3D::XMLElement parentElement)
+bool TradeGoodsTypesContainer::SaveToXML(Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }

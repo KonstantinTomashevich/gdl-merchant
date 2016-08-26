@@ -8,14 +8,14 @@ namespace GameEngine
 {
 class MapObject : public Component
 {
-URHO3D_OBJECT (MapObject, MapComponent)
+URHO3D_OBJECT (MapObject, Component)
 protected:
     BoundingCircle bounds_;
     float maxCollisionDistance_;
 public:
     MapObject (Urho3D::Context *context);
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
-    virtual bool SaveToXML (Urho3D::XMLElement parentElement);
+    virtual bool SaveToXML (Urho3D::XMLElement &parentElement);
     Urho3D::Vector2 GetPosition ();
     void SetPosition (Urho3D::Vector2 position);
     BoundingCircle *GetBounds ();

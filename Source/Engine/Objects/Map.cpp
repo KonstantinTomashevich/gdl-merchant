@@ -140,7 +140,7 @@ bool Map::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool Map::SaveToXML (Urho3D::XMLElement parentElement)
+bool Map::SaveToXML (Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }

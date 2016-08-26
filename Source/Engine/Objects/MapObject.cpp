@@ -22,9 +22,14 @@ bool MapObject::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
-bool MapObject::SaveToXML (Urho3D::XMLElement parentElement)
+bool MapObject::SaveToXML (Urho3D::XMLElement &parentElement)
 {
-    //TODO: Implement this.
+    Urho3D::XMLElement saveElement = parentElement.CreateChild ("object");
+    saveElement.SetAttribute ("type", this->GetTypeName ());
+    saveElement.SetVector2 ("position", bounds_.position_);
+    saveElement.SetFloat ("radius", bounds_.radius_);
+    saveElement.SetFloat ("maxCollisionDistance", maxCollisionDistance_);
+    return true;
 }
 
 Urho3D::Vector2 MapObject::GetPosition ()

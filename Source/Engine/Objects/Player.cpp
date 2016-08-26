@@ -133,7 +133,7 @@ bool Player::LoadFromXML (Urho3D::XMLElement rootElement)
     }
 }
 
-bool Player::SaveToXML(Urho3D::XMLElement parentElement)
+bool Player::SaveToXML(Urho3D::XMLElement &parentElement)
 {
     //TODO: Implement this.
 }
