@@ -59,7 +59,6 @@ void TestCollision::Start ()
 
     Urho3D::SharedPtr <GameEngine::Village> village (new GameEngine::Village (context_));
     map->Add (village);
-    map->Init ();
     log->Write (Urho3D::LOG_INFO, "Village added...");
 
     village->GetStorage ()->SetStorageSlotsCount (24);
@@ -77,6 +76,7 @@ void TestCollision::Start ()
     map->Add (caravan1);
     map->Add (caravan2);
     map->Add (caravan3);
+    map->Init ();
     log->Write (Urho3D::LOG_INFO, "Caravans added...");
 
     caravan1->GetBounds ()->position_ = Urho3D::Vector2 ();
