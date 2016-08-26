@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Math/Vector2.h>
 
 namespace GameEngine
@@ -15,7 +15,7 @@ public:
     bool IsIntersects (BoundingCircle &other);
     bool IsContains (BoundingCircle &other);
 
-    operator == (const BoundingCircle &other);
-    operator != (const BoundingCircle &other);
+    bool operator == (const BoundingCircle &other);
+    bool operator != (const BoundingCircle &other);
 };
 }

@@ -1,4 +1,4 @@
-#include "BoundingCircle.hpp"
+﻿#include "BoundingCircle.hpp"
 
 namespace GameEngine
 {
@@ -24,12 +24,12 @@ bool BoundingCircle::IsContains (BoundingCircle &other)
     return ( (position_ - other.position_).Length () < radius_ - other.radius_);
 }
 
-BoundingCircle::operator ==(const BoundingCircle &other)
+bool BoundingCircle::operator ==(const BoundingCircle &other)
 {
     return (position_ == other.position_ && radius_ == other.radius_);
 }
 
-BoundingCircle::operator !=(const BoundingCircle &other)
+bool BoundingCircle::operator !=(const BoundingCircle &other)
 {
     return (position_ != other.position_ || radius_ != other.radius_);
 }
