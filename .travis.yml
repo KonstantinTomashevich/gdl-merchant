@@ -21,7 +21,7 @@ before_script:
 - cd states-engine-for-urho3d
 - mkdir build
 - cd build
-- cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/SDK
+- cmake .. -DSTATES_ENGINE_INSTALL=1 -DCMAKE_INSTALL_PREFIX=$PWD/SDK
 - make
 - make install
 - export STATES_ENGINE_SDK_DIR=$PWD/SDK
