@@ -9,7 +9,7 @@ class Village : public MapObject, public Trader
 {
 URHO3D_OBJECT (Village, MapObject)
 protected:
-    int population_;
+    float population_;
     Urho3D::Vector2 populationIncrease_;
     float populationIncreaseTimestep_;
     float timeFromLastPopulationIncrease_;
