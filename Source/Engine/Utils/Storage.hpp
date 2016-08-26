@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Container/Vector.h>
+#include <Engine/Objects/TradeGoodsTypesContainer.hpp>
 #include "StorageSlot.hpp"
 
 namespace GameEngine
@@ -27,6 +28,8 @@ public:
     int GetCountOfStorageSlotsWith (Urho3D::StringHash type);
     float GetAmountOf (Urho3D::StringHash type);
     StorageSlot *GetFirstStorageSlotWith (Urho3D::StringHash type);
+    void LoadStorageFromString (TradeGoodsTypesContainer *typesContainer, Urho3D::String string); //In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
+    Urho3D::String SaveStorageToString (TradeGoodsTypesContainer *typesContainer);//In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
     virtual ~Storage ();
 };
 }

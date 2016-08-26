@@ -1,5 +1,6 @@
-#include "Storage.hpp"
+﻿#include "Storage.hpp"
 #include <Engine/Engine.hpp>
+#include <Urho3D/Core/StringUtils.h>
 
 namespace GameEngine
 {
@@ -155,6 +156,52 @@ StorageSlot *Storage::GetFirstStorageSlotWith (Urho3D::StringHash type)
         if (GetStorageSlot (index).GetTypeId () == type)
             return &GetStorageSlot (index);
     return 0;
+}
+
+void Storage::LoadStorageFromString (TradeGoodsTypesContainer *typesContainer, Urho3D::String string)
+{
+    ClearStorage ();
+    assert (!string.Empty ());
+    Urho3D::Vector <Urho3D::String> splited = string.Split (';');
+    assert (splited.Size () >= 2);
+    int slotsCount = Urho3D::ToInt (splited.At (0));
+
+    assert (splited.Size () == slotsCount + 1);
+    if (splited.Size () != slotsCount + 1)
+        return;
+    SetStorageSlotsCount (slotsCount);
+
+    for (int index = 0; index < slotsCount; index++)
+    {
+        Urho3D::String slotString = splited.At (index + 1);
+        Urho3D::Vector <Urho3D::String> slotDef = slotString.Split ('=');
+        assert (slotDef.Size () == 2);
+        StorageSlot *slot = &GetStorageSlot (index);
+        if (Urho3D::StringHash (slotDef.At (0)) != STORAGE_SLOT_EMPTY)
+            slot->Set (&typesContainer->GetByHash (Urho3D::StringHash (slotDef.At (0))), Urho3D::ToFloat (slotDef.At (1)));
+        else
+            slot->SetEmpty ();
+    }
+}
+
+Urho3D::String Storage::SaveStorageToString (TradeGoodsTypesContainer *typesContainer)
+{
+    Urho3D::String string;
+    string += Urho3D::String (GetStorageSlotsCount ()) + Urho3D::String (";");
+    for (int index = 0; index < GetStorageSlotsCount (); index++)
+    {
+        StorageSlot *slot = &GetStorageSlot (index);
+        Urho3D::String typeName;
+        if (slot->GetTypeId () != STORAGE_SLOT_EMPTY)
+        {
+            TradeGoodsType *type = &typesContainer->GetByHash (slot->GetTypeId ());
+            typeName = type->GetName ();
+        }
+        else
+            typeName = "EMPTY";
+        string += typeName + Urho3D::String ("=") + Urho3D::String (slot->GetAmount ()) + Urho3D::String (";");
+    }
+    return string;
 }
 
 Storage::~Storage()

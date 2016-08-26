@@ -119,15 +119,57 @@ bool Village::Dispose ()
 
 bool Village::LoadFromXML (Urho3D::XMLElement rootElement)
 {
+    production_.Clear ();
     if (!MapObject::LoadFromXML (rootElement))
         return false;
-    //TODO: Implement this.
+    assert (rootElement.HasAttribute ("name"));
+    assert (rootElement.HasAttribute ("population"));
+    assert (rootElement.HasAttribute ("populationIncrease"));
+    assert (rootElement.HasAttribute ("populationIncreaseTimestep"));
+    assert (rootElement.HasAttribute ("production"));
+    assert (rootElement.HasAttribute ("storage"));
+
+    if (!rootElement.HasAttribute ("name") || !rootElement.HasAttribute ("population") ||
+            !rootElement.HasAttribute ("populationIncrease") ||
+            !rootElement.HasAttribute ("populationIncreaseTimestep") || !rootElement.HasAttribute ("production") ||
+            !rootElement.HasAttribute ("storage"))
+        return false;
+
+    name_ = rootElement.GetAttribute ("name");
+    population_ = rootElement.GetFloat ("population");
+    populationIncrease_ = rootElement.GetVector2 ("populationIncrease");
+    populationIncreaseTimestep_ = rootElement.GetFloat ("populationIncreaseTimestep");
+
+    Urho3D::Vector <Urho3D::String> productionStrings = rootElement.GetAttribute ("production").Split (';');
+    for (int index = 0; index < productionStrings.Size (); index++)
+    {
+        Urho3D::Vector <Urho3D::String> productionDef = productionStrings.At (index).Split ('=');
+        assert (productionDef.Size () == 2);
+        production_ [Urho3D::StringHash (productionDef.At (0))] = Urho3D::ToFloat (productionDef.At (1));
+    }
+    storage_.LoadStorageFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
     return true;
 }
 
 Urho3D::XMLElement Village::SaveToXML(Urho3D::XMLElement &parentElement)
 {
-    //TODO: Implement this.
+    Urho3D::XMLElement saveElement = MapObject::SaveToXML (parentElement);
+    saveElement.SetAttribute ("name", name_);
+    saveElement.SetFloat ("population", population_);
+    saveElement.SetVector2 ("populationIncrease", populationIncrease_);
+    saveElement.SetFloat ("populationIncreaseTimestep", populationIncreaseTimestep_);
+
+    Urho3D::String productionString;
+    for (int index = 0; index < production_.Keys ().Size (); index++)
+    {
+        Urho3D::StringHash type = production_.Keys ().At (index);
+        float production = production_.Values ().At (index);
+        productionString += GetTradeGoodsTypesContainer ()->GetByHash (type).GetName () +
+                Urho3D::String ("=") + Urho3D::String (production) + Urho3D::String (";");
+    }
+    saveElement.SetAttribute ("production", productionString);
+    saveElement.SetAttribute ("storage", storage_.SaveStorageToString (GetTradeGoodsTypesContainer ()));
+    return saveElement;
 }
 
 bool Village::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
