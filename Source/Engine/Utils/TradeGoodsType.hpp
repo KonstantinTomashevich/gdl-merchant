@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Container/Str.h>
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Container/HashMap.h>
@@ -28,14 +28,14 @@ public:
     virtual ~TradeGoodsType ();
 };
 
-inline operator == (const TradeGoodsType &lhs, const TradeGoodsType &rhs)
+inline bool operator == (const TradeGoodsType &lhs, const TradeGoodsType &rhs)
 {
     return (lhs.GetName () == rhs.GetName () && lhs.GetStoragingCost ()== rhs.GetStandartCost () &&
             lhs.GetStandartCost () == rhs.GetStandartCost () && lhs.GetProductionCost () == rhs.GetProductionCost () &&
             lhs.WhatRequiredForProduction () == rhs.WhatRequiredForProduction ());
 }
 
-inline operator != (const TradeGoodsType &lhs, const TradeGoodsType &rhs)
+inline bool operator != (const TradeGoodsType &lhs, const TradeGoodsType &rhs)
 {
     return !(lhs == rhs);
 }
