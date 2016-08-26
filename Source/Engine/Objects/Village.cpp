@@ -29,7 +29,7 @@ void Village::Product ()
     {
         if (production_.Values ().At (index) > 0.0f)
         {
-            TradeGoodsType *type = &(GetTradeGoodsTypesContainer ()->GetByHash (production_.Keys ().At (index)));
+            TradeGoodsType *type = GetTradeGoodsTypesContainer ()->GetByHash (production_.Keys ().At (index));
             float willBeProducted = produceTimestep_ * production_.Values ().At (index);
             float canBeProducted = 0.0f;
 
@@ -52,7 +52,7 @@ void Village::Product ()
                 willBeProducted = canBeProducted;
             if (!type->WhatRequiredForProduction ().Empty ())
                 for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Size (); reqIndex++)
-                    storage_.Throw (&GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex)),
+                    storage_.Throw (GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex)),
                                     willBeProducted * type->WhatRequiredForProduction ().Values ().At (reqIndex));
             storage_.Store (type, willBeProducted);
         }
@@ -162,10 +162,12 @@ Urho3D::XMLElement Village::SaveToXML(Urho3D::XMLElement &parentElement)
     Urho3D::String productionString;
     for (int index = 0; index < production_.Keys ().Size (); index++)
     {
-        Urho3D::StringHash type = production_.Keys ().At (index);
+        Urho3D::StringHash typeName = production_.Keys ().At (index);
         float production = production_.Values ().At (index);
-        productionString += GetTradeGoodsTypesContainer ()->GetByHash (type).GetName () +
-                Urho3D::String ("=") + Urho3D::String (production) + Urho3D::String (";");
+        TradeGoodsType *type = GetTradeGoodsTypesContainer ()->GetByHash (typeName);
+        assert (type);
+        if (type)
+            productionString += type->GetName () + Urho3D::String ("=") + Urho3D::String (production) + Urho3D::String (";");
     }
     saveElement.SetAttribute ("production", productionString);
     saveElement.SetAttribute ("storage", storage_.SaveStorageToString (GetTradeGoodsTypesContainer ()));

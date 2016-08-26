@@ -23,8 +23,8 @@ public:
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetCount ();
-    TradeGoodsType &GetByIndex (int index);
-    TradeGoodsType &GetByHash (Urho3D::StringHash nameHash);
+    TradeGoodsType *GetByIndex (int index);
+    TradeGoodsType *GetByHash (Urho3D::StringHash nameHash);
     bool RemoveByIndex (int index);
     bool RemoveByHash (Urho3D::StringHash nameHash);
     bool Remove (TradeGoodsType& type);

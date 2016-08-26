@@ -20,10 +20,10 @@ public:
     bool IsCanThrow (TradeGoodsType *type, float amount);
     bool Throw (TradeGoodsType *type, float amount);
 
-    StorageSlot &GetStorageSlot (int index);
+    StorageSlot *GetStorageSlot (int index);
     void SetStorageSlot (int index, StorageSlot &slot);
     int GetStorageEmptySlotsCount ();
-    StorageSlot &GetStorageFirstEmptySlot ();
+    StorageSlot *GetStorageFirstEmptySlot ();
 
     int GetCountOfStorageSlotsWith (Urho3D::StringHash type);
     float GetAmountOf (Urho3D::StringHash type);

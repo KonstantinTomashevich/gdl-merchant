@@ -95,22 +95,20 @@ int TradeGoodsTypesContainer::GetCount ()
     return types_.Size ();
 }
 
-TradeGoodsType &TradeGoodsTypesContainer::GetByIndex (int index)
+TradeGoodsType *TradeGoodsTypesContainer::GetByIndex (int index)
 {
     assert (index >= 0);
     assert (index < GetCount ());
-    return types_.At (index);
+    return &types_.At (index);
 }
 
-TradeGoodsType &TradeGoodsTypesContainer::GetByHash (Urho3D::StringHash nameHash)
+TradeGoodsType *TradeGoodsTypesContainer::GetByHash (Urho3D::StringHash nameHash)
 {
     assert (!types_.Empty ());
     for (int index = 0; index < types_.Size (); index++)
         if (Urho3D::StringHash (types_.At (index).GetName ()) == nameHash)
-            return types_.At (index);
-
-    // Will be never reached at normal situation.
-    assert (false);
+            return &types_.At (index);
+    return 0;
 }
 
 bool TradeGoodsTypesContainer::RemoveByIndex (int index)
@@ -123,7 +121,7 @@ bool TradeGoodsTypesContainer::RemoveByIndex (int index)
 bool TradeGoodsTypesContainer::RemoveByHash (Urho3D::StringHash nameHash)
 {
     assert (!types_.Empty ());
-    Remove (GetByHash (nameHash));
+    Remove (*GetByHash (nameHash));
 }
 
 bool TradeGoodsTypesContainer::Remove (TradeGoodsType &type)
@@ -136,7 +134,7 @@ void TradeGoodsTypesContainer::Add (TradeGoodsType &type)
     types_.Push (type);
 }
 
-TradeGoodsTypesContainer::~TradeGoodsTypesContainer()
+TradeGoodsTypesContainer::~TradeGoodsTypesContainer ()
 {
 
 }
