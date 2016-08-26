@@ -1,4 +1,4 @@
-#include "Caravan.hpp"
+﻿#include "Caravan.hpp"
 #include "Village.hpp"
 #include "Events.hpp"
 #include "CaravanOrders.hpp"
@@ -143,6 +143,11 @@ bool Caravan::LoadFromXML (Urho3D::XMLElement rootElement)
         return false;
     //TODO: Implement this.
     return true;
+}
+
+bool Caravan::SaveToXML (Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 bool Caravan::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

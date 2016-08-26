@@ -1,4 +1,4 @@
-#include "Village.hpp"
+﻿#include "Village.hpp"
 #include "Map.hpp"
 #include "Events.hpp"
 #include <Engine/Engine.hpp>
@@ -123,6 +123,11 @@ bool Village::LoadFromXML (Urho3D::XMLElement rootElement)
         return false;
     //TODO: Implement this.
     return true;
+}
+
+bool Village::SaveToXML(Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 bool Village::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

@@ -1,4 +1,4 @@
-#include "Player.hpp"
+﻿#include "Player.hpp"
 #include <Engine/Engine.hpp>
 #include "Caravan.hpp"
 
@@ -131,6 +131,11 @@ bool Player::LoadFromXML (Urho3D::XMLElement rootElement)
             relation = relation.GetNext ("relation");
         }
     }
+}
+
+bool Player::SaveToXML(Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 bool Player::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

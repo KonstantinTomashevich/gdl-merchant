@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/Variant.h>
 #include <Urho3D/Math/StringHash.h>
@@ -14,6 +14,7 @@ class XMLSerializable
 {
 public:
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement) = 0;
+    virtual bool SaveToXML (Urho3D::XMLElement parentElement) = 0;
 };
 
 class EventListener

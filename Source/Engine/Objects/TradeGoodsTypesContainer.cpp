@@ -1,4 +1,4 @@
-#include "TradeGoodsTypesContainer.hpp"
+﻿#include "TradeGoodsTypesContainer.hpp"
 #include <Engine/Engine.hpp>
 #include <Urho3D/IO/Log.h>
 
@@ -78,6 +78,11 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
         typeXML = typeXML.GetNext ("type");
     }
     return true;
+}
+
+bool TradeGoodsTypesContainer::SaveToXML(Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 bool TradeGoodsTypesContainer::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

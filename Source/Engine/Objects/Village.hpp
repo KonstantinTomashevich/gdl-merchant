@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Engine/Utils/Trader.hpp>
 #include "Caravan.hpp"
 #include "MapObject.hpp"
@@ -32,6 +32,7 @@ public:
     virtual bool Dispose ();
 
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
+    virtual bool SaveToXML (Urho3D::XMLElement parentElement);
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     Urho3D::String GetName ();
     void SetName (Urho3D::String name);

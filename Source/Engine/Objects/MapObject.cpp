@@ -1,4 +1,4 @@
-#include "MapObject.hpp"
+﻿#include "MapObject.hpp"
 #include <Engine/Engine.hpp>
 
 namespace GameEngine
@@ -20,6 +20,11 @@ bool MapObject::LoadFromXML (Urho3D::XMLElement rootElement)
     if (rootElement.HasAttribute ("maxCollisionDistance"))
         maxCollisionDistance_ = rootElement.GetFloat ("maxCollisionDistance");
     return true;
+}
+
+bool MapObject::SaveToXML (Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 Urho3D::Vector2 MapObject::GetPosition ()

@@ -1,4 +1,4 @@
-#include "Map.hpp"
+﻿#include "Map.hpp"
 #include "Events.hpp"
 #include "MapObject.hpp"
 #include "Player.hpp"
@@ -138,6 +138,11 @@ bool Map::LoadFromXML (Urho3D::XMLElement rootElement)
 {
     // TODO: Implement this.
     return true;
+}
+
+bool Map::SaveToXML (Urho3D::XMLElement parentElement)
+{
+    //TODO: Implement this.
 }
 
 bool Map::ProcessEvent(Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
