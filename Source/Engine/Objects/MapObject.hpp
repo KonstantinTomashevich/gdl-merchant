@@ -12,6 +12,9 @@ URHO3D_OBJECT (MapObject, Component)
 protected:
     BoundingCircle bounds_;
     float maxCollisionDistance_;
+    Urho3D::String xmlPrefabPath_;
+    float prefabRotation_;
+    float prefabScale_;
 public:
     MapObject (Urho3D::Context *context);
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
@@ -22,6 +25,13 @@ public:
     float GetMaxCollisionDistance ();
     void SetMaxCollisionDistance (float maxCollisionDistance);
     bool IsCollides (MapObject *other);
+
+    Urho3D::String GetXMLPrefabPath ();
+    void SetXMLPrefabPath (Urho3D::String xmlPrefabPath);
+    float GetPrefabRotation ();
+    void SetPrefabRotation (float prefabRotation);
+    float GetPrefabScale ();
+    void SetPrefabScale (float prefabScale);
     virtual ~MapObject ();
 };
 }
