@@ -2,6 +2,7 @@
 #include "Events.hpp"
 #include "MapObject.hpp"
 #include "Player.hpp"
+#include <StatesEngine/StatesEngineEvents.hpp>
 #include <Engine/Engine.hpp>
 
 namespace GameEngine
@@ -66,7 +67,7 @@ void Map::CheckAndSendCollisions ()
 
 Map::Map (Urho3D::Context *context) : Component (context), ComponentsHolder (context), StatesEngine::StateObjectsHub ()
 {
-
+    SubscribeToEvent (this, StatesEngine::Events::E_STATE_OBJECT_ADDED_TO_HUB, URHO3D_HANDLER (Map, OnObjectAdded));
 }
 
 bool Map::Init ()
@@ -211,6 +212,34 @@ Urho3D::SharedPtr <Player> Map::GetPlayerById (Urho3D::StringHash id)
         }
     delete players;
     return selected;
+}
+
+void Map::OnObjectAdded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Component *component = (Component *) eventData [StatesEngine::Events::StateObjectAddedToHub::P_STATE_OBJECT].GetPtr ();
+    if (component->GetTypeInfo ()->IsTypeOf <MapObject> ())
+    {
+        MapObject *object = (MapObject *) component;
+        if (object->GetIdentifierNumber () == -1)
+            if (objects_.Size () == 1)
+                object->SetIdentifierNumber (0);
+            else
+            {
+                MapObject *lastObject = 0;
+                int lastScannedIndex = objects_.Size () - 1;
+                while (!lastObject && lastScannedIndex > 0)
+                {
+                    lastScannedIndex -= 1;
+                    if (objects_.At (lastScannedIndex)->GetTypeInfo ()->IsTypeOf <MapObject> ())
+                        lastObject = (MapObject *) objects_.At (lastScannedIndex).Get ();
+                }
+
+                if (lastObject)
+                    object->SetIdentifierNumber (lastObject->GetIdentifierNumber () + 1);
+                else
+                    object->SetIdentifierNumber (0);
+            }
+    }
 }
 
 Map::~Map ()

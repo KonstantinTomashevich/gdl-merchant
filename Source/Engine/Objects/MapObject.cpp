@@ -8,6 +8,7 @@ MapObject::MapObject (Urho3D::Context *context) : Component (context), bounds_ (
     xmlPrefabPath_ = Urho3D::String::EMPTY;
     prefabRotation_ = 0.0f;
     prefabScale_ = 1.0f;
+    identifierNumber_ = -1;
 }
 
 bool MapObject::LoadFromXML (Urho3D::XMLElement rootElement)
@@ -29,6 +30,8 @@ bool MapObject::LoadFromXML (Urho3D::XMLElement rootElement)
     prefabScale_ = rootElement.GetFloat ("prefabScale");
     if (rootElement.HasAttribute ("maxCollisionDistance"))
         maxCollisionDistance_ = rootElement.GetFloat ("maxCollisionDistance");
+    if (rootElement.HasAttribute ("identifierNumber"))
+        identifierNumber_ = rootElement.GetInt ("identifierNumber");
     return true;
 }
 
@@ -42,6 +45,8 @@ Urho3D::XMLElement MapObject::SaveToXML (Urho3D::XMLElement &parentElement)
     saveElement.SetFloat ("prefabRotation", prefabRotation_);
     saveElement.SetFloat ("prefabScale", prefabScale_);
     saveElement.SetFloat ("maxCollisionDistance", maxCollisionDistance_);
+    if (identifierNumber_ != -1)
+        saveElement.SetInt ("identifierNumber", identifierNumber_);
     return saveElement;
 }
 
@@ -106,6 +111,16 @@ float MapObject::GetPrefabScale ()
 void MapObject::SetPrefabScale (float prefabScale)
 {
     prefabScale_ = prefabScale;
+}
+
+int MapObject::GetIdentifierNumber ()
+{
+    return identifierNumber_;
+}
+
+void MapObject::SetIdentifierNumber (int identifierNumber)
+{
+    identifierNumber_ = identifierNumber;
 }
 
 MapObject::~MapObject ()

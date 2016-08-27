@@ -27,6 +27,7 @@ public:
     virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement);
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     Urho3D::SharedPtr <Player> GetPlayerById (Urho3D::StringHash id);
+    void OnObjectAdded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     virtual ~Map ();
 };
 }

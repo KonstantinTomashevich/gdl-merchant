@@ -14,52 +14,52 @@ GameEngineEvent (Move)
 
 GameEngineEvent (Follow)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (ObjectIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (ObjectId);
 }
 
 GameEngineEvent (Attack)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (ObjectIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (ObjectId);
 }
 
 GameEngineEvent (StoreTo)
 {
-    /// int. Index of object in map. Object will inherit Trader, because trader contains storage.
-    GameEngineEventParameter (ObjectWithStorageIndex);
+    /// int. Identifier number of object in map. Object will inherit Trader, because trader contains storage.
+    GameEngineEventParameter (ObjectWithStorageId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }
 
 GameEngineEvent (ExchangeFrom)
 {
-    /// int. Index of object in map. Object will inherit Trader, because trader contains storage.
-    GameEngineEventParameter (ObjectWithStorageIndex);
+    /// int. Identifier number of object in map. Object will inherit Trader, because trader contains storage.
+    GameEngineEventParameter (ObjectWithStorageId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }
 
 GameEngineEvent (Buy)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (TraderObjectIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (TraderObjectId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }
 
 GameEngineEvent (Sell)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (TraderObjectIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (TraderObjectId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }
 
 GameEngineEvent (CreateMarketplaceTrader)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (MarketplaceTownIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (MarketplaceTownId);
     /// Urho3D::VariantVector. All variants will be Urho3D::VariantMap. Can be empty (if no missions).
     GameEngineEventParameter (MissionsData);
     /// Urho3D::VariantMap. All variants will be floats!
@@ -68,20 +68,20 @@ GameEngineEvent (CreateMarketplaceTrader)
 
 GameEngineEvent (BuyFromMarketplace)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (MarketplaceTownIndex);
-    /// int. Index of marketplace slot with trader.
-    GameEngineEventParameter (TraderIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (MarketplaceTownId);
+    /// int. Identifier number of marketplace trader.
+    GameEngineEventParameter (TraderId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }
 
 GameEngineEvent (SellToMarketplace)
 {
-    /// int. Index of object in map.
-    GameEngineEventParameter (MarketplaceTownIndex);
-    //// int. Index of marketplace slot with trader.
-    GameEngineEventParameter (TraderIndex);
+    /// int. Identifier number of object in map.
+    GameEngineEventParameter (MarketplaceTownId);
+    /// int. Identifier number of marketplace trader.
+    GameEngineEventParameter (TraderId);
     /// Urho3D::VariantMap. All variants will be floats!
     GameEngineEventParameter (What);
 }

@@ -15,6 +15,7 @@ protected:
     Urho3D::String xmlPrefabPath_;
     float prefabRotation_;
     float prefabScale_;
+    int identifierNumber_;
 public:
     MapObject (Urho3D::Context *context);
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
@@ -32,6 +33,8 @@ public:
     void SetPrefabRotation (float prefabRotation);
     float GetPrefabScale ();
     void SetPrefabScale (float prefabScale);
+    int GetIdentifierNumber ();
+    void SetIdentifierNumber (int identifierNumber);
     virtual ~MapObject ();
 };
 }
