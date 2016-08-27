@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.hpp"
 #include <Urho3D/Container/Vector.h>
 #include <Engine/Engine.hpp>
@@ -35,7 +35,6 @@ public:
     {
         components_.Push (component);
         OnComponentAdded (component);
-        components_.Push (component);
     }
 
     virtual bool RemoveComponent (Urho3D::SharedPtr <T> component)
