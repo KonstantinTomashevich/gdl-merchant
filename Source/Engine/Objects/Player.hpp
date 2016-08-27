@@ -36,6 +36,7 @@ public:
     float GetRelationsWith (Urho3D::StringHash id);
     void SetRelationWith (Urho3D::StringHash id, float value);
     Urho3D::SharedPtr <Caravan> CreateCaravan (Map *map, int storageSlots = 8, Urho3D::Vector2 position = Urho3D::Vector2::ZERO);
+    void AddCaravan (Caravan *caravan);
     virtual ~Player ();
 };
 }
