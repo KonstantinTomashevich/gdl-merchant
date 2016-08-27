@@ -24,7 +24,6 @@ void Village::ProcessCollide (MapObject *other)
 
 void Village::Product ()
 {
-    Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     timeFromLastProduce_ = 0.0f;
     for (int index = 0; index < production_.Keys ().Size (); index++)
     {
@@ -34,7 +33,6 @@ void Village::Product ()
             assert (type);
             float willBeProducted = production_.Values ().At (index);
             float canBeProducted = 0.0f;
-            log->Write (Urho3D::LOG_INFO, Urho3D::String ("Will be producted ") + type->GetName () + Urho3D::String (willBeProducted));
 
             if (type->WhatRequiredForProduction ().Empty ())
                 canBeProducted = willBeProducted + 1.0f;
@@ -44,16 +42,12 @@ void Village::Product ()
                 for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Size (); reqIndex++)
                 {
                     float resourcesAmount = storage_.GetAmountOf (type->WhatRequiredForProduction ().Keys ().At (reqIndex));
-                    log->Write (Urho3D::LOG_INFO, Urho3D::String ("R ") +
-                                GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex))->GetName ()
-                                + Urho3D::String (resourcesAmount));
                     float canBeProductedFromThis = resourcesAmount / type->WhatRequiredForProduction ().Values ().At (reqIndex);
 
                     if (canBeProductedFromThis < canBeProducted)
                         canBeProducted = canBeProductedFromThis;
                 }
             }
-            log->Write (Urho3D::LOG_INFO, Urho3D::String ("Can be producted ") + type->GetName () + Urho3D::String (canBeProducted));
 
             if  (willBeProducted > canBeProducted)
                 willBeProducted = canBeProducted;
@@ -61,8 +55,6 @@ void Village::Product ()
                 for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Size (); reqIndex++)
                     storage_.Throw (GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex)),
                                     willBeProducted * type->WhatRequiredForProduction ().Values ().At (reqIndex));
-
-            log->Write (Urho3D::LOG_INFO, Urho3D::String ("Will be producted ") + type->GetName () + Urho3D::String (willBeProducted));
             storage_.Store (type, willBeProducted);
         }
     }
