@@ -207,7 +207,7 @@ Urho3D::SharedPtr <Caravan> Player::CreateCaravan (Map *map, int storageSlots, U
     Urho3D::SharedPtr <Caravan> caravan = Urho3D::SharedPtr <Caravan> (new Caravan (context_));
     map->Add (caravan);
     caravan->SetPosition (position);
-    caravan->GetStorage ()->SetStorageSlotsCount (storageSlots);
+    caravan->GetStorage ()->SetSlotsCount (storageSlots);
     caravan->SetPlayer (this, &protectedData_);
     return caravan;
 }

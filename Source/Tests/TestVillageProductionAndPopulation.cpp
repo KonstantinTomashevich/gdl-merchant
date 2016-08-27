@@ -68,7 +68,7 @@ void TestVillageProductionAndPopulation::Start ()
     map->Init ();
     log->Write (Urho3D::LOG_INFO, "Village added...");
 
-    village->GetStorage ()->SetStorageSlotsCount (villageStorageSlotsCount);
+    village->GetStorage ()->SetSlotsCount (villageStorageSlotsCount);
     village->SetPopulation (populationAtStart);
     village->SetProduction ("Food", foodProductionAtStart);
     log->Write (Urho3D::LOG_INFO, "Village configured...");

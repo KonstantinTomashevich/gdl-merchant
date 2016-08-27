@@ -11,25 +11,25 @@ protected:
     Urho3D::Vector <StorageSlot> storageSlots_;
 public:
     Storage ();
-    void ClearStorage ();
-    int GetStorageSlotsCount ();
-    void SetStorageSlotsCount (int count);
+    void Clear ();
+    int GetSlotsCount ();
+    void SetSlotsCount (int count);
 
     bool IsCanStore (TradeGoodsType *type, float amount);
     bool Store (TradeGoodsType *type, float amount);
     bool IsCanThrow (TradeGoodsType *type, float amount);
     bool Throw (TradeGoodsType *type, float amount);
 
-    StorageSlot *GetStorageSlot (int index);
-    void SetStorageSlot (int index, StorageSlot &slot);
-    int GetStorageEmptySlotsCount ();
-    StorageSlot *GetStorageFirstEmptySlot ();
+    StorageSlot *GetSlot (int index);
+    void SetSlot (int index, StorageSlot &slot);
+    int GeteEmptySlotsCount ();
+    StorageSlot *GetFirstEmptySlot ();
 
-    int GetCountOfStorageSlotsWith (Urho3D::StringHash type);
+    int GetCountOfSlotsWith (Urho3D::StringHash type);
     float GetAmountOf (Urho3D::StringHash type);
-    StorageSlot *GetFirstStorageSlotWith (Urho3D::StringHash type);
-    void LoadStorageFromString (TradeGoodsTypesContainer *typesContainer, Urho3D::String string); //In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
-    Urho3D::String SaveStorageToString (TradeGoodsTypesContainer *typesContainer);//In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
+    StorageSlot *GetFirstSlotWith (Urho3D::StringHash type);
+    void LoadFromString (TradeGoodsTypesContainer *typesContainer, Urho3D::String string); //In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
+    Urho3D::String SaveToString (TradeGoodsTypesContainer *typesContainer);//In format: "SLOTS_COUNT;SLOT_1;...;SLOT_N", each slot is "TYPE=AMOUNT"
     virtual ~Storage ();
 };
 }

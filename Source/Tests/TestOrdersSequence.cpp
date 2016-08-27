@@ -85,6 +85,15 @@ void TestOrdersSequence::Start ()
     caravan->Order (GameEngine::CaravanOrders::Move, orderData3);
     log->Write (Urho3D::LOG_INFO, "Caravan orders sended...");
 
+    //TODO: Delete after serialization pre-testing.
+    /*Urho3D::XMLFile *file = new Urho3D::XMLFile (context_);
+    Urho3D::XMLElement root = file->CreateRoot ("root");
+    caravan->SaveToXML (root);
+    log->Write (Urho3D::LOG_INFO, file->ToString ());
+    assert (caravan->LoadFromXML (root.GetChild ("object")));
+    delete file;*/
+    //
+
     map->SetIsUseLog (true);
     log->SetLevel (Urho3D::LOG_DEBUG);
     bool isOrder1Done = false;

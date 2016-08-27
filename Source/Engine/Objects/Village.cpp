@@ -110,7 +110,7 @@ bool Village::Dispose ()
     {
         ready_ = false;
         caravansIn_.Clear ();
-        storage_.ClearStorage ();
+        storage_.Clear ();
         production_.Clear ();
         return true;
     }
@@ -148,7 +148,7 @@ bool Village::LoadFromXML (Urho3D::XMLElement rootElement)
         assert (productionDef.Size () == 2);
         production_ [Urho3D::StringHash (productionDef.At (0))] = Urho3D::ToFloat (productionDef.At (1));
     }
-    storage_.LoadStorageFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
+    storage_.LoadFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
     return true;
 }
 
@@ -171,7 +171,7 @@ Urho3D::XMLElement Village::SaveToXML(Urho3D::XMLElement &parentElement)
             productionString += type->GetName () + Urho3D::String ("=") + Urho3D::String (production) + Urho3D::String (";");
     }
     saveElement.SetAttribute ("production", productionString);
-    saveElement.SetAttribute ("storage", storage_.SaveStorageToString (GetTradeGoodsTypesContainer ()));
+    saveElement.SetAttribute ("storage", storage_.SaveToString (GetTradeGoodsTypesContainer ()));
     return saveElement;
 }
 

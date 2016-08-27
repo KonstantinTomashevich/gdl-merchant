@@ -10,7 +10,7 @@ void Caravan::MoveToPoint (float timeStep, Urho3D::Vector2 point)
 {
     Urho3D::Vector2 distance = point - GetPosition ();
     float speed = maxSpeed_ - fullStorageSpeedDecrease_ *
-            ( (float) (storage_.GetStorageSlotsCount () - storage_.GetStorageEmptySlotsCount ()) / (float) storage_.GetStorageSlotsCount ());
+            ( (float) (storage_.GetSlotsCount () - storage_.GeteEmptySlotsCount ()) / (float) storage_.GetSlotsCount ());
     Urho3D::Vector2 move = distance;
     move *= (speed * timeStep / distance.Length ());
     SetPosition (GetPosition () + move);
@@ -183,7 +183,7 @@ bool Caravan::Dispose ()
 bool Caravan::LoadFromXML (Urho3D::XMLElement rootElement)
 {
     orders_.Clear ();
-    storage_.ClearStorage ();
+    storage_.Clear ();
     if (!MapObject::LoadFromXML (rootElement))
         return false;
     assert (rootElement.HasAttribute ("player"));
@@ -219,7 +219,7 @@ bool Caravan::LoadFromXML (Urho3D::XMLElement rootElement)
 
     maxSpeed_ = rootElement.GetFloat ("maxSpeed");
     fullStorageSpeedDecrease_ = rootElement.GetFloat ("fullStorageSpeedDecrease");
-    storage_.LoadStorageFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
+    storage_.LoadFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
     return true;
 }
 
@@ -238,7 +238,7 @@ Urho3D::XMLElement Caravan::SaveToXML (Urho3D::XMLElement &parentElement)
 
     saveElement.SetFloat ("maxSpeed", maxSpeed_);
     saveElement.SetFloat ("fullStorageSpeedDecrease", fullStorageSpeedDecrease_);
-    saveElement.SetAttribute ("storage", storage_.SaveStorageToString (GetTradeGoodsTypesContainer ()));
+    saveElement.SetAttribute ("storage", storage_.SaveToString (GetTradeGoodsTypesContainer ()));
     return saveElement;
 }
 

@@ -61,7 +61,7 @@ void TestCollision::Start ()
     map->Add (village);
     log->Write (Urho3D::LOG_INFO, "Village added...");
 
-    village->GetStorage ()->SetStorageSlotsCount (24);
+    village->GetStorage ()->SetSlotsCount (24);
     village->SetPopulation (1000);
     village->SetProduction ("Food", 2.0f);
     village->GetBounds ()->position_ = Urho3D::Vector2 (1.0f, 1.0f);
