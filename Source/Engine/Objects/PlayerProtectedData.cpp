@@ -1,4 +1,4 @@
-#include "PlayerProtectedData.hpp"
+﻿#include "PlayerProtectedData.hpp"
 #include "Player.hpp"
 
 namespace GameEngine
@@ -11,11 +11,6 @@ void PlayerProtectedData::Init (Player *player)
 PlayerProtectedData::PlayerProtectedData ()
 {
 
-}
-
-void PlayerProtectedData::SetRelation (Urho3D::StringHash id, float value)
-{
-    player_->relations_ [id] = value;
 }
 
 Urho3D::HashMap <Urho3D::StringHash, float> *PlayerProtectedData::GetRelationsMap ()

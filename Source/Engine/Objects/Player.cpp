@@ -95,6 +95,7 @@ bool Player::Dispose ()
 
 bool Player::LoadFromXML (Urho3D::XMLElement rootElement)
 {
+    components_.Clear ();
     assert (rootElement.HasAttribute ("id"));
     assert (rootElement.HasAttribute ("gold"));
     assert (rootElement.HasAttribute ("color"));
@@ -133,9 +134,26 @@ bool Player::LoadFromXML (Urho3D::XMLElement rootElement)
     }
 }
 
-Urho3D::XMLElement Player::SaveToXML(Urho3D::XMLElement &parentElement)
+Urho3D::XMLElement Player::SaveToXML (Urho3D::XMLElement &parentElement)
 {
-    //TODO: Implement this.
+    Urho3D::XMLElement saveElement = parentElement.CreateChild ("object");
+    saveElement.SetAttribute ("type", GetTypeName ());
+    saveElement.SetAttribute ("id", id_);
+    saveElement.SetFloat ("gold", gold_);
+    saveElement.SetColor ("color", color_);
+    for (int index = 0; index < components_.Size (); index++)
+        components_.At (index)->SaveToXML (saveElement);
+
+    for (int index = 0; index < relations_.Size (); index++)
+    {
+        Urho3D::XMLElement relationXML = saveElement.CreateChild ("relation");
+        Urho3D::StringHash otherPlayerId = relations_.Keys ().At (index);
+        Player *otherPlayer = ((Map *) parent_)->GetPlayerById (otherPlayerId);
+        assert (otherPlayer);
+        relationXML.SetAttribute ("name", otherPlayer->GetId ());
+        relationXML.SetFloat ("value", relations_.Values ().At (index));
+    }
+    return saveElement;
 }
 
 bool Player::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -173,6 +191,15 @@ float Player::GetRelationsWith (Urho3D::StringHash id)
     if (!relations_.Contains (id))
         relations_ [id] = 0.0f;
     return relations_ [id];
+}
+
+void Player::SetRelationWith (Urho3D::StringHash id, float value)
+{
+    if (value > 100.0f)
+        value = 100.0f;
+    if (value < -100.0f)
+        value = -100.0f;
+    relations_ [id] = value;
 }
 
 Urho3D::SharedPtr <Caravan> Player::CreateCaravan (Map *map, int storageSlots, Urho3D::Vector2 position)

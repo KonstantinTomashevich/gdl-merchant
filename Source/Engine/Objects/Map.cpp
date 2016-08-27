@@ -160,12 +160,12 @@ bool Map::ProcessEvent(Urho3D::StringHash eventType, Urho3D::VariantMap &eventDa
     return isProcessed;
 }
 
-Urho3D::SharedPtr <Player> Map::GetPlayerById (Urho3D::String id)
+Urho3D::SharedPtr <Player> Map::GetPlayerById (Urho3D::StringHash id)
 {
     Urho3D::Vector <Urho3D::SharedPtr <Player> > *players = GetAll <Player> ();
     Urho3D::SharedPtr <Player> selected;
     for (int index = 0; index < players->Size (); index++)
-        if (players->At (index)->GetId () == id)
+        if (Urho3D::StringHash (players->At (index)->GetId ()) == id)
         {
             selected =  players->At (index);
             index = players->Size ();
