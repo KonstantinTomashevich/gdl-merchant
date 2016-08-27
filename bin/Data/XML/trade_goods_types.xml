@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <document_root>
     <type name = "Food"
-              storagingCost = "1.0"
-              standartCost = "10"
-              productionCost = "5.0"
-              icon = "Icons/food.png" />
+          storagingCost = "1.0"
+          standartCost = "10"
+          productionCost = "5.0"
+          icon = "Icons/food.png" />
 </document_root>

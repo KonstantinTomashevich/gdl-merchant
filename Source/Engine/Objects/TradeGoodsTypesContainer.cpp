@@ -61,7 +61,7 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
             Urho3D::String icon = typeXML.GetAttribute ("icon");
             Urho3D::HashMap <Urho3D::StringHash, float> requiredForProduction;
 
-            if (typeXML.HasChild ("requirmentsXML"))
+            if (typeXML.HasChild ("requiredForProduction"))
             {
                 Urho3D::XMLElement requirmentsXML = typeXML.GetChild ("requiredForProduction");
                 Urho3D::XMLElement element = requirmentsXML.GetChild ("requirment");
@@ -82,7 +82,35 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
 
 Urho3D::XMLElement TradeGoodsTypesContainer::SaveToXML (Urho3D::XMLElement &parentElement)
 {
-    //TODO: Implement this.
+    Urho3D::XMLElement saveElement = parentElement.CreateChild ("component");
+    saveElement.SetAttribute ("type", GetTypeName ());
+    for (int index = 0; index < types_.Size (); index++)
+    {
+        TradeGoodsType *type = GetByIndex (index);
+        Urho3D::XMLElement typeXML = saveElement.CreateChild ("type");
+        typeXML.SetAttribute ("name", type->GetName ());
+        typeXML.SetFloat ("storagingCost", type->GetStoragingCost ());
+        typeXML.SetFloat ("standartCost", type->GetStandartCost ());
+        typeXML.SetFloat ("productionCost", type->GetProductionCost ());
+        typeXML.SetAttribute ("icon", type->GetIcon ());
+
+        if (!type->WhatRequiredForProduction ().Empty ())
+        {
+            Urho3D::XMLElement requirmentsXML = typeXML.CreateChild ("requiredForProduction");
+            for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Keys ().Size (); reqIndex++)
+            {
+                Urho3D::XMLElement reqXML = requirmentsXML.CreateChild ("requirment");
+                TradeGoodsType *reqType = GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex));
+                assert (reqType);
+                if (reqType)
+                {
+                    reqXML.SetAttribute ("name", reqType->GetName ());
+                    reqXML.SetFloat ("amount", type->WhatRequiredForProduction ().Values ().At (reqIndex));
+                }
+            }
+        }
+    }
+    return saveElement;
 }
 
 bool TradeGoodsTypesContainer::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

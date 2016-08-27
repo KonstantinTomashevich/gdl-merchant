@@ -55,8 +55,11 @@ bool Storage::Store (TradeGoodsType *type, float amount)
         StorageSlot *slot = GetStorageSlot (slotIndex);
         if (slot->GetTypeId () == Urho3D::StringHash (type->GetName ()) || slot->GetTypeId () == STORAGE_SLOT_EMPTY)
         {
-            float toStore = slotCapacity - slot->GetAmount ();
-            slot->Set (type, toStore);
+            float canBeStored = slotCapacity - slot->GetAmount ();
+            float toStore = canBeStored;
+            if (canBeStored > willBeStored)
+                toStore = willBeStored;
+            slot->Set (type, slot->GetAmount () + toStore);
             willBeStored -= toStore;
         }
         slotIndex++;

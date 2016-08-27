@@ -86,7 +86,7 @@ void TestVillageProductionAndPopulation::Start ()
                 Urho3D::String ("\nFood on storage: ") + Urho3D::String (village->GetStorage ()->GetAmountOf ("Food")));
 
     if (village->GetPopulation () > populationAtStart && village->GetProductionOf ("Food") > foodProductionAtStart &&
-            village->GetStorage ()->GetAmountOf ("Food") > foodProductionAtStart * 10.0f * 2.5f)
+            village->GetStorage ()->GetAmountOf ("Food") > foodProductionAtStart * 2.5f)
         engine_->Exit ();
     else
         ErrorExit ("Population and production don't increase as expected!");
