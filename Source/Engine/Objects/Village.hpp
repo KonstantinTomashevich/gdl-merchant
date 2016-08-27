@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Engine/Utils/Trader.hpp>
 #include "Caravan.hpp"
 #include "MapObject.hpp"
@@ -9,7 +9,7 @@ class Village : public MapObject, public Trader
 {
 URHO3D_OBJECT (Village, MapObject)
 protected:
-    int population_;
+    float population_;
     Urho3D::Vector2 populationIncrease_;
     float populationIncreaseTimestep_;
     float timeFromLastPopulationIncrease_;
@@ -32,6 +32,7 @@ public:
     virtual bool Dispose ();
 
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
+    virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement);
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     Urho3D::String GetName ();
     void SetName (Urho3D::String name);

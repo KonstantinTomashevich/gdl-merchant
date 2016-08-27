@@ -1,4 +1,4 @@
-#include "TradeGoodsTypesContainer.hpp"
+﻿#include "TradeGoodsTypesContainer.hpp"
 #include <Engine/Engine.hpp>
 #include <Urho3D/IO/Log.h>
 
@@ -61,7 +61,7 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
             Urho3D::String icon = typeXML.GetAttribute ("icon");
             Urho3D::HashMap <Urho3D::StringHash, float> requiredForProduction;
 
-            if (typeXML.HasChild ("requirmentsXML"))
+            if (typeXML.HasChild ("requiredForProduction"))
             {
                 Urho3D::XMLElement requirmentsXML = typeXML.GetChild ("requiredForProduction");
                 Urho3D::XMLElement element = requirmentsXML.GetChild ("requirment");
@@ -80,6 +80,39 @@ bool TradeGoodsTypesContainer::LoadFromXML (Urho3D::XMLElement rootElement)
     return true;
 }
 
+Urho3D::XMLElement TradeGoodsTypesContainer::SaveToXML (Urho3D::XMLElement &parentElement)
+{
+    Urho3D::XMLElement saveElement = parentElement.CreateChild ("component");
+    saveElement.SetAttribute ("type", GetTypeName ());
+    for (int index = 0; index < types_.Size (); index++)
+    {
+        TradeGoodsType *type = GetByIndex (index);
+        Urho3D::XMLElement typeXML = saveElement.CreateChild ("type");
+        typeXML.SetAttribute ("name", type->GetName ());
+        typeXML.SetFloat ("storagingCost", type->GetStoragingCost ());
+        typeXML.SetFloat ("standartCost", type->GetStandartCost ());
+        typeXML.SetFloat ("productionCost", type->GetProductionCost ());
+        typeXML.SetAttribute ("icon", type->GetIcon ());
+
+        if (!type->WhatRequiredForProduction ().Empty ())
+        {
+            Urho3D::XMLElement requirmentsXML = typeXML.CreateChild ("requiredForProduction");
+            for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Keys ().Size (); reqIndex++)
+            {
+                Urho3D::XMLElement reqXML = requirmentsXML.CreateChild ("requirment");
+                TradeGoodsType *reqType = GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex));
+                assert (reqType);
+                if (reqType)
+                {
+                    reqXML.SetAttribute ("name", reqType->GetName ());
+                    reqXML.SetFloat ("amount", type->WhatRequiredForProduction ().Values ().At (reqIndex));
+                }
+            }
+        }
+    }
+    return saveElement;
+}
+
 bool TradeGoodsTypesContainer::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     return false;
@@ -90,22 +123,20 @@ int TradeGoodsTypesContainer::GetCount ()
     return types_.Size ();
 }
 
-TradeGoodsType &TradeGoodsTypesContainer::GetByIndex (int index)
+TradeGoodsType *TradeGoodsTypesContainer::GetByIndex (int index)
 {
     assert (index >= 0);
     assert (index < GetCount ());
-    return types_.At (index);
+    return &types_.At (index);
 }
 
-TradeGoodsType &TradeGoodsTypesContainer::GetByHash (Urho3D::StringHash nameHash)
+TradeGoodsType *TradeGoodsTypesContainer::GetByHash (Urho3D::StringHash nameHash)
 {
     assert (!types_.Empty ());
     for (int index = 0; index < types_.Size (); index++)
         if (Urho3D::StringHash (types_.At (index).GetName ()) == nameHash)
-            return types_.At (index);
-
-    // Will be never reached at normal situation.
-    assert (false);
+            return &types_.At (index);
+    return 0;
 }
 
 bool TradeGoodsTypesContainer::RemoveByIndex (int index)
@@ -118,7 +149,7 @@ bool TradeGoodsTypesContainer::RemoveByIndex (int index)
 bool TradeGoodsTypesContainer::RemoveByHash (Urho3D::StringHash nameHash)
 {
     assert (!types_.Empty ());
-    Remove (GetByHash (nameHash));
+    Remove (*GetByHash (nameHash));
 }
 
 bool TradeGoodsTypesContainer::Remove (TradeGoodsType &type)
@@ -131,7 +162,7 @@ void TradeGoodsTypesContainer::Add (TradeGoodsType &type)
     types_.Push (type);
 }
 
-TradeGoodsTypesContainer::~TradeGoodsTypesContainer()
+TradeGoodsTypesContainer::~TradeGoodsTypesContainer ()
 {
 
 }

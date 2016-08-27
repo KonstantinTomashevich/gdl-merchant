@@ -1,4 +1,4 @@
-#include "InputMapper.hpp"
+﻿#include "InputMapper.hpp"
 #include <Urho3D/Core/CoreEvents.h>
 #include <Game/BuildConfig.hpp>
 
@@ -22,7 +22,10 @@ void InputMapper::OnSetActionStateEvent (Urho3D::StringHash eventType, Urho3D::V
     if (ContainsAction (name))
     {
         Urho3D::VariantMap settingData = eventData [Events::SetActionState::P_STATE_CHANGE_DATA].GetVariantMap ();
-        GetAction (name).SetState (eventData [Events::SetActionState::P_STATE].GetBool (), settingData);
+        InputAction *action = GetAction (name);
+        assert (action);
+        if (action)
+            action->SetState (eventData [Events::SetActionState::P_STATE].GetBool (), settingData);
     }
 }
 
@@ -32,9 +35,9 @@ void InputMapper::OnToggleActionStateEvent (Urho3D::StringHash eventType, Urho3D
     assert (ContainsAction (name));
     if (ContainsAction (name))
     {
-        InputAction &action = GetAction (name);
+        InputAction *action = GetAction (name);
         Urho3D::VariantMap settingData = eventData [Events::ToggleActionState::P_STATE_CHANGE_DATA].GetVariantMap ();
-        action.SetState (!action.GetState (), settingData);
+        action->SetState (!action->GetState (), settingData);
     }
 }
 
@@ -52,21 +55,23 @@ void InputMapper::AddAction(InputAction &action)
         actions_.Push (action);
 }
 
-InputAction &InputMapper::GetAction (Urho3D::String name)
+InputAction *InputMapper::GetAction (Urho3D::String name)
 {
     assert (ContainsAction (name));
     for (int index = 0; index < actions_.Size (); index++)
         if (actions_.At (index).GetName () == name)
-            return actions_.At (index);
-
-    // Will be never reached!
-    assert (false);
-    return *(new InputAction ());
+            return &actions_.At (index);
+    return 0;
 }
 
 bool InputMapper::Is (Urho3D::String name)
 {
-    return GetAction (name).GetState ();
+    InputAction *action = GetAction (name);
+    assert (action);
+    if (action)
+        return action->GetState ();
+    else
+        return false;
 }
 
 bool InputMapper::LoadFromXML (Urho3D::XMLElement element)

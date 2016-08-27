@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Math/Color.h>
@@ -14,7 +14,6 @@ protected:
     void Init (Player *player);
 public:
     PlayerProtectedData ();
-    void SetRelation (Urho3D::StringHash id, float value);
     Urho3D::HashMap <Urho3D::StringHash, float> *GetRelationsMap ();
     void SetId (Urho3D::String id);
     void SetGold (float gold);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MapObject.hpp"
 #include <Engine/Utils/Trader.hpp>
 #include "Map.hpp"
@@ -18,6 +18,7 @@ protected:
     float maxSpeed_;
     float fullStorageSpeedDecrease_;
     void MoveToPoint (float timeStep, Urho3D::Vector2 point);
+    Urho3D::String OrderTypeHashToString (Urho3D::StringHash orderTypeHash);
 
     // This functions will return true if order completed and will be deleted now!
     virtual bool ProcessFirstOrder (float timeStep);
@@ -29,6 +30,9 @@ protected:
     virtual bool ProcessAsBuyOrder (float timeStep);
     virtual bool ProcessAsSellOrder (float timeStep);
     virtual bool ProcessAsCreateMarketplaceTraderOrder (float timeStep);
+    virtual bool ProcessAsBuyFromMarketplaceOrder (float timeStep);
+    virtual bool ProcessAsSellToMarketplaceOrder (float timeStep);
+    //
 
     virtual TradeGoodsTypesContainer *GetTradeGoodsTypesContainer ();
     virtual void SetPlayersGold (float gold);
@@ -39,6 +43,7 @@ public:
     virtual bool Dispose ();
 
     virtual bool LoadFromXML (Urho3D::XMLElement rootElement);
+    virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement);
     virtual bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void ClearOrders ();
     void Order (Urho3D::StringHash orderType, Urho3D::VariantMap data);

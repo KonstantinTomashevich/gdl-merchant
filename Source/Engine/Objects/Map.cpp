@@ -1,7 +1,8 @@
-#include "Map.hpp"
+﻿#include "Map.hpp"
 #include "Events.hpp"
 #include "MapObject.hpp"
 #include "Player.hpp"
+#include <Engine/Engine.hpp>
 
 namespace GameEngine
 {
@@ -136,8 +137,51 @@ bool Map::Dispose ()
 
 bool Map::LoadFromXML (Urho3D::XMLElement rootElement)
 {
-    // TODO: Implement this.
+    assert (rootElement.HasChild ("components"));
+    assert (rootElement.HasChild ("objects"));
+    if (!rootElement.HasChild ("components") || !rootElement.HasChild ("objects"))
+        return false;
+
+    Urho3D::XMLElement componentXML = rootElement.GetChild ("components").GetChild ("component");
+    while (componentXML.NotNull () && componentXML != Urho3D::XMLElement::EMPTY)
+    {
+        Urho3D::String typeName = componentXML.GetAttribute ("type");
+        Urho3D::SharedPtr <MapComponent> component = CreateComponent (typeName);
+        if (component.NotNull ())
+        {
+            assert (component->LoadFromXML (componentXML));
+            component->Init ();
+        }
+        componentXML = componentXML.GetNext ("component");
+    }
+
+    Urho3D::XMLElement objectXML = rootElement.GetChild ("objects").GetChild ("object");
+    while (objectXML.NotNull () && objectXML != Urho3D::XMLElement::EMPTY)
+    {
+        Urho3D::String typeName = objectXML.GetAttribute ("type");
+        Urho3D::SharedPtr <Component> object;
+        object.StaticCast (Create (typeName));
+        if (object.NotNull ())
+        {
+            assert (object->LoadFromXML (objectXML));
+            object->Init ();
+        }
+        objectXML = objectXML.GetNext ("object");
+    }
     return true;
+}
+
+Urho3D::XMLElement Map::SaveToXML (Urho3D::XMLElement &parentElement)
+{
+    Urho3D::XMLElement saveElement = parentElement.CreateChild ("map");
+    Urho3D::XMLElement componentsXML = saveElement.CreateChild ("components");
+    for (int index = 0; index < components_.Size (); index++)
+        components_.At (index)->SaveToXML (componentsXML);
+
+    Urho3D::XMLElement objectsXML = saveElement.CreateChild ("objects");
+    for (int index = 0; index < objects_.Size (); index++)
+        ( (Component *) (objects_.At (index).Get () ) )->SaveToXML (objectsXML);
+    return saveElement;
 }
 
 bool Map::ProcessEvent(Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -155,12 +199,12 @@ bool Map::ProcessEvent(Urho3D::StringHash eventType, Urho3D::VariantMap &eventDa
     return isProcessed;
 }
 
-Urho3D::SharedPtr <Player> Map::GetPlayerById (Urho3D::String id)
+Urho3D::SharedPtr <Player> Map::GetPlayerById (Urho3D::StringHash id)
 {
     Urho3D::Vector <Urho3D::SharedPtr <Player> > *players = GetAll <Player> ();
     Urho3D::SharedPtr <Player> selected;
     for (int index = 0; index < players->Size (); index++)
-        if (players->At (index)->GetId () == id)
+        if (Urho3D::StringHash (players->At (index)->GetId ()) == id)
         {
             selected =  players->At (index);
             index = players->Size ();

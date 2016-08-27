@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Node.h>
@@ -24,6 +24,7 @@ public:
 
     bool ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     bool LoadFromXML (Urho3D::XMLElement rootElement);
+    virtual Urho3D::XMLElement SaveToXML (Urho3D::XMLElement &parentElement);
     void OnMapChildAdded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void OnMapChildRemoved (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     StatesEngine::SceneContainer *GetSceneContainer ();

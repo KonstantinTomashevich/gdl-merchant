@@ -1,4 +1,4 @@
-#include "Trader.hpp"
+﻿#include "Trader.hpp"
 #include <Engine/Engine.hpp>
 
 namespace GameEngine
@@ -45,19 +45,19 @@ bool Trader::RequestSell (Urho3D::StringHash type, float amount, float reward, T
     if (player_)
         SetPlayersGold (player_->GetGold () + reward);
 
-    bool throwResult = storage_.Throw (&GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
+    bool throwResult = storage_.Throw (GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
     assert (throwResult);
     return buyer->Buy (type, amount, reward);
 }
 
 bool Trader::IsCanSell (Urho3D::StringHash type, float amount)
 {
-    return storage_.IsCanThrow (&GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
+    return storage_.IsCanThrow (GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
 }
 
 bool Trader::IsCanBuy (Urho3D::StringHash type, float amount, float cost)
 {
-    if (!storage_.IsCanStore (&GetTradeGoodsTypesContainer ()->GetByHash (type), amount))
+    if (!storage_.IsCanStore (GetTradeGoodsTypesContainer ()->GetByHash (type), amount))
         return false;
 
     if (!player_)
@@ -76,7 +76,7 @@ bool Trader::Buy (Urho3D::StringHash type, float amount, float cost)
     if (!isCanBuy)
         return false;
 
-    bool storeResult = storage_.Store (&GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
+    bool storeResult = storage_.Store (GetTradeGoodsTypesContainer ()->GetByHash (type), amount);
     assert (storeResult);
     if (player_)
         SetPlayersGold (player_->GetGold () - cost);
@@ -84,7 +84,8 @@ bool Trader::Buy (Urho3D::StringHash type, float amount, float cost)
 
 float Trader::GetBasicCost (bool isSell, Urho3D::StringHash type, float amount)
 {
-    return GetTradeGoodsTypesContainer ()->GetByHash (type).GetStandartCost () * amount *
+    assert (GetTradeGoodsTypesContainer ()->GetByHash (type));
+    return GetTradeGoodsTypesContainer ()->GetByHash (type)->GetStandartCost () * amount *
             (isSell ? sellingCostModifer_ : buyingCostModifer_);
 }
 

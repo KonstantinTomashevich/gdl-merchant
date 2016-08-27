@@ -1,4 +1,4 @@
-#include "MapObjectsVisualizer.hpp"
+﻿#include "MapObjectsVisualizer.hpp"
 #include <StatesEngine/StatesEngineEvents.hpp>
 #include <Urho3D/IO/Log.h>
 #include <Engine/Objects/Map.hpp>
@@ -53,6 +53,11 @@ bool MapObjectsVisualizer::LoadFromXML (Urho3D::XMLElement rootElement)
     villages_.Clear ();
     caravans_.Clear ();
     return true;
+}
+
+Urho3D::XMLElement MapObjectsVisualizer::SaveToXML(Urho3D::XMLElement &parentElement)
+{
+    //TODO: Implement this.
 }
 
 void MapObjectsVisualizer::OnMapChildAdded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

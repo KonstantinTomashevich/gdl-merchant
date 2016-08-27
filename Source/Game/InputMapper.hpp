@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/Str.h>
@@ -73,7 +73,7 @@ public:
 
     bool ContainsAction (Urho3D::String name);
     void AddAction (InputAction &action);
-    InputAction &GetAction (Urho3D::String name);
+    InputAction *GetAction (Urho3D::String name);
     bool Is (Urho3D::String name);
     bool LoadFromXML (Urho3D::XMLElement element);
     virtual ~InputMapper ();

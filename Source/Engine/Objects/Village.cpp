@@ -1,4 +1,4 @@
-#include "Village.hpp"
+﻿#include "Village.hpp"
 #include "Map.hpp"
 #include "Events.hpp"
 #include <Engine/Engine.hpp>
@@ -29,19 +29,20 @@ void Village::Product ()
     {
         if (production_.Values ().At (index) > 0.0f)
         {
-            TradeGoodsType *type = &(GetTradeGoodsTypesContainer ()->GetByHash (production_.Keys ().At (index)));
-            float willBeProducted = produceTimestep_ * production_.Values ().At (index);
+            TradeGoodsType *type = GetTradeGoodsTypesContainer ()->GetByHash (production_.Keys ().At (index));
+            assert (type);
+            float willBeProducted = production_.Values ().At (index);
             float canBeProducted = 0.0f;
 
             if (type->WhatRequiredForProduction ().Empty ())
                 canBeProducted = willBeProducted + 1.0f;
             else
             {
-                canBeProducted = std::numeric_limits <float> ().max ();
+                canBeProducted = 999999.0f;
                 for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Size (); reqIndex++)
                 {
-                    float canBeProductedFromThis = storage_.GetAmountOf (type->WhatRequiredForProduction ().Keys ().At (reqIndex)) /
-                            type->WhatRequiredForProduction ().Values ().At (reqIndex);
+                    float resourcesAmount = storage_.GetAmountOf (type->WhatRequiredForProduction ().Keys ().At (reqIndex));
+                    float canBeProductedFromThis = resourcesAmount / type->WhatRequiredForProduction ().Values ().At (reqIndex);
 
                     if (canBeProductedFromThis < canBeProducted)
                         canBeProducted = canBeProductedFromThis;
@@ -52,7 +53,7 @@ void Village::Product ()
                 willBeProducted = canBeProducted;
             if (!type->WhatRequiredForProduction ().Empty ())
                 for (int reqIndex = 0; reqIndex < type->WhatRequiredForProduction ().Size (); reqIndex++)
-                    storage_.Throw (&GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex)),
+                    storage_.Throw (GetTradeGoodsTypesContainer ()->GetByHash (type->WhatRequiredForProduction ().Keys ().At (reqIndex)),
                                     willBeProducted * type->WhatRequiredForProduction ().Values ().At (reqIndex));
             storage_.Store (type, willBeProducted);
         }
@@ -109,7 +110,7 @@ bool Village::Dispose ()
     {
         ready_ = false;
         caravansIn_.Clear ();
-        storage_.ClearStorage ();
+        storage_.Clear ();
         production_.Clear ();
         return true;
     }
@@ -119,10 +120,59 @@ bool Village::Dispose ()
 
 bool Village::LoadFromXML (Urho3D::XMLElement rootElement)
 {
+    production_.Clear ();
     if (!MapObject::LoadFromXML (rootElement))
         return false;
-    //TODO: Implement this.
+    assert (rootElement.HasAttribute ("name"));
+    assert (rootElement.HasAttribute ("population"));
+    assert (rootElement.HasAttribute ("populationIncrease"));
+    assert (rootElement.HasAttribute ("populationIncreaseTimestep"));
+    assert (rootElement.HasAttribute ("production"));
+    assert (rootElement.HasAttribute ("storage"));
+
+    if (!rootElement.HasAttribute ("name") || !rootElement.HasAttribute ("population") ||
+            !rootElement.HasAttribute ("populationIncrease") ||
+            !rootElement.HasAttribute ("populationIncreaseTimestep") || !rootElement.HasAttribute ("production") ||
+            !rootElement.HasAttribute ("storage"))
+        return false;
+
+    name_ = rootElement.GetAttribute ("name");
+    population_ = rootElement.GetFloat ("population");
+    populationIncrease_ = rootElement.GetVector2 ("populationIncrease");
+    populationIncreaseTimestep_ = rootElement.GetFloat ("populationIncreaseTimestep");
+
+    Urho3D::Vector <Urho3D::String> productionStrings = rootElement.GetAttribute ("production").Split (';');
+    for (int index = 0; index < productionStrings.Size (); index++)
+    {
+        Urho3D::Vector <Urho3D::String> productionDef = productionStrings.At (index).Split ('=');
+        assert (productionDef.Size () == 2);
+        production_ [Urho3D::StringHash (productionDef.At (0))] = Urho3D::ToFloat (productionDef.At (1));
+    }
+    storage_.LoadFromString (GetTradeGoodsTypesContainer (), rootElement.GetAttribute ("storage"));
     return true;
+}
+
+Urho3D::XMLElement Village::SaveToXML(Urho3D::XMLElement &parentElement)
+{
+    Urho3D::XMLElement saveElement = MapObject::SaveToXML (parentElement);
+    saveElement.SetAttribute ("name", name_);
+    saveElement.SetFloat ("population", population_);
+    saveElement.SetVector2 ("populationIncrease", populationIncrease_);
+    saveElement.SetFloat ("populationIncreaseTimestep", populationIncreaseTimestep_);
+
+    Urho3D::String productionString;
+    for (int index = 0; index < production_.Keys ().Size (); index++)
+    {
+        Urho3D::StringHash typeName = production_.Keys ().At (index);
+        float production = production_.Values ().At (index);
+        TradeGoodsType *type = GetTradeGoodsTypesContainer ()->GetByHash (typeName);
+        assert (type);
+        if (type)
+            productionString += type->GetName () + Urho3D::String ("=") + Urho3D::String (production) + Urho3D::String (";");
+    }
+    saveElement.SetAttribute ("production", productionString);
+    saveElement.SetAttribute ("storage", storage_.SaveToString (GetTradeGoodsTypesContainer ()));
+    return saveElement;
 }
 
 bool Village::ProcessEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
