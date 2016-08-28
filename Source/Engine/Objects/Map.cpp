@@ -335,6 +335,22 @@ bool Map::RemoveAmbient (AmbientObject *ambient)
     return result;
 }
 
+void Map::RecreateVisualization()
+{
+    if (HasComponent <MapVisualizer> ())
+    {
+        Urho3D::SharedPtr <MapVisualizer> mapVisualizer = GetComponent <MapVisualizer> ();
+        mapVisualizer->ClearAll ();
+        mapVisualizer->UpdateTerrain ();
+        for (int index = 0; index < ambients_.Size (); index++)
+            mapVisualizer->AddAmbient (ambients_.At (index));
+
+        for (int index = 0; index < objects_.Size (); index++)
+            if (objects_.At (index)->GetTypeInfo ()->IsTypeOf <MapObject> ())
+                mapVisualizer->AddObject ((MapObject *) objects_.At (index).Get ());
+    }
+}
+
 Map::~Map ()
 {
     ClearAmbients ();

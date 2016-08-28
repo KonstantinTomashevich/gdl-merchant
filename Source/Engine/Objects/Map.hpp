@@ -39,6 +39,7 @@ public:
     void ClearAmbients ();
     void AddAmbient (AmbientObject *ambient);
     bool RemoveAmbient (AmbientObject *ambient);
+    void RecreateVisualization ();
     virtual ~Map ();
 };
 }
